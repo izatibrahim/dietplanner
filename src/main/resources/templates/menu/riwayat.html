@@ -1,0 +1,53 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head th:replace="~{fragments/layout :: head(title='Riwayat Menu')}"></head>
+  <body>
+    <div class="app-shell">
+      <div th:replace="~{fragments/layout :: nav(active='riwayat')}"></div>
+      <div class="main-col">
+        <div class="topbar d-lg-none">
+          <div class="brand"><span class="dot"></span>Diet Planner</div>
+          <a href="/logout" class="text-dark"
+            ><i class="bi bi-box-arrow-right fs-5"></i
+          ></a>
+        </div>
+        <div class="content-wrap">
+          <p class="page-title mb-0">Riwayat Menu</p>
+          <p
+            class="page-sub"
+            th:text="${#lists.size(daftarRiwayat)} + ' menu tersimpan'"
+          >
+            0 menu
+          </p>
+
+          <div th:if="${daftarRiwayat.isEmpty()}" class="empty-state card-soft">
+            <i class="bi bi-clock-history"></i> Belum ada riwayat menu
+            tersimpan.
+          </div>
+
+          <div th:each="r : ${daftarRiwayat}" class="card-soft mb-3">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+              <span class="fw-bold" th:text="${r.tanggal}"></span>
+              <span
+                class="badge-kategori"
+                th:text="${r.totalKalori} + ' kkal'"
+              ></span>
+            </div>
+            <div class="subtitle mb-1">
+              <i class="bi bi-sunrise text-warning"></i> Sarapan:
+              <span th:text="${r.sarapan}"></span>
+            </div>
+            <div class="subtitle mb-1">
+              <i class="bi bi-sun text-warning"></i> Makan Siang:
+              <span th:text="${r.makanSiang}"></span>
+            </div>
+            <div class="subtitle">
+              <i class="bi bi-moon-stars text-secondary"></i> Makan Malam:
+              <span th:text="${r.makanMalam}"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

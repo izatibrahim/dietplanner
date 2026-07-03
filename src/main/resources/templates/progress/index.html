@@ -1,0 +1,146 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head th:replace="~{fragments/layout :: head(title='Progress')}"></head>
+  <body>
+    <div class="app-shell">
+      <div th:replace="~{fragments/layout :: nav(active='progress')}"></div>
+      <div class="main-col">
+        <div class="topbar d-lg-none">
+          <div class="brand"><span class="dot"></span>Diet Planner</div>
+          <a href="/logout" class="text-dark"
+            ><i class="bi bi-box-arrow-right fs-5"></i
+          ></a>
+        </div>
+        <div class="content-wrap">
+          <p class="page-title mb-0">Progress Berat Badan</p>
+          <p class="page-sub">Pantau tren berat badanmu dari waktu ke waktu</p>
+
+          <div class="card-soft mb-3">
+            <div
+              class="d-flex justify-content-between align-items-end flex-wrap gap-2 mb-2"
+            >
+              <div>
+                <div class="text-muted" style="font-size: 0.8rem">
+                  Berat terakhir
+                </div>
+                <div
+                  class="fs-3 fw-bold"
+                  th:text="${(beratTerakhir != null ? beratTerakhir : user.beratBadan)} + ' kg'"
+                ></div>
+              </div>
+              <span
+                th:if="${selisih != null and selisih < 0}"
+                class="badge-kategori"
+                style="background: #e4f5e9; color: #2e9e5b"
+              >
+                <i class="bi bi-arrow-down"></i>
+                <span
+                  th:text="${#numbers.formatDecimal(selisih,1,1,'POINT')}"
+                ></span>
+                kg dari catatan sebelumnya
+              </span>
+              <span
+                th:if="${selisih != null and selisih > 0}"
+                class="badge-kategori"
+                style="background: #fcebe9; color: #e2574c"
+              >
+                <i class="bi bi-arrow-up"></i> +<span
+                  th:text="${#numbers.formatDecimal(selisih,1,1,'POINT')}"
+                ></span>
+                kg dari catatan sebelumnya
+              </span>
+              <span
+                th:if="${selisih != null and selisih == 0}"
+                class="badge-kategori"
+                >Stabil</span
+              >
+            </div>
+
+            <div class="chart-wrap">
+              <canvas id="grafikBerat" height="180"></canvas>
+            </div>
+          </div>
+
+          <div class="card-soft mb-3">
+            <div class="fw-bold mb-2" style="font-size: 0.95rem">
+              Catat Berat Badan Hari Ini
+            </div>
+            <form
+              method="post"
+              th:action="@{/progress/tambah}"
+              class="d-flex gap-2 form-soft"
+            >
+              <input
+                class="form-control"
+                type="number"
+                step="0.1"
+                name="beratBadan"
+                placeholder="Contoh: 68.5"
+                required
+              />
+              <button
+                class="btn-brand btn"
+                type="submit"
+                style="white-space: nowrap"
+              >
+                Simpan
+              </button>
+            </form>
+          </div>
+
+          <div th:if="${riwayat.isEmpty()}" class="empty-state card-soft">
+            <i class="bi bi-graph-up-arrow"></i> Belum ada catatan berat badan.
+          </div>
+
+          <div
+            th:each="r : ${riwayat}"
+            class="list-row"
+            th:if="${!riwayat.isEmpty()}"
+          >
+            <div>
+              <div class="title" th:text="${r.tanggal}"></div>
+            </div>
+            <div class="fw-bold" th:text="${r.beratBadan} + ' kg'"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <script th:inline="javascript">
+      /*<![CDATA[*/
+      const riwayatBerat = /*[[${riwayat}]]*/ [];
+      /*]]>*/
+
+      const labels = riwayatBerat.map((r) => r.tanggal);
+      const data = riwayatBerat.map((r) => r.beratBadan);
+
+      const ctx = document.getElementById("grafikBerat");
+      new Chart(ctx, {
+        type: "line",
+        data: {
+          labels: labels,
+          datasets: [
+            {
+              label: "Berat Badan (kg)",
+              data: data,
+              borderColor: "#2E9E5B",
+              backgroundColor: "rgba(69,185,117,0.15)",
+              tension: 0.35,
+              fill: true,
+              pointBackgroundColor: "#2E9E5B",
+              pointRadius: 4,
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          plugins: { legend: { display: false } },
+          scales: {
+            y: { beginAtZero: false },
+          },
+        },
+      });
+    </script>
+  </body>
+</html>

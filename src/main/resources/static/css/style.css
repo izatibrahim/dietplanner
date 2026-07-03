@@ -1,0 +1,434 @@
+/* =========================================================
+   DIET PLANNER — design tokens
+   Palette terinspirasi dari referensi: hijau segar + lime,
+   satu kartu gelap sebagai aksen, background krem-putih.
+   ========================================================= */
+:root {
+  --green-600: #2e9e5b;
+  --green-500: #45b975;
+  --green-100: #e4f5e9;
+  --lime-400: #c7de3e;
+  --dark-900: #1b221c;
+  --cream-50: #f6f8f1;
+  --text-900: #202b22;
+  --text-500: #71806f;
+  --white: #ffffff;
+  --danger: #e2574c;
+  --radius-lg: 24px;
+  --radius-md: 16px;
+  --radius-sm: 10px;
+  --shadow-card: 0 10px 30px rgba(32, 43, 34, 0.08);
+}
+
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap");
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Inter", system-ui, sans-serif;
+  background: var(--cream-50);
+  color: var(--text-900);
+  min-height: 100vh;
+  padding-bottom: 88px; /* space for mobile bottom nav */
+}
+
+h1,
+h2,
+h3,
+h4,
+.brand,
+.stat-value {
+  font-family: "Poppins", sans-serif;
+}
+
+a {
+  text-decoration: none;
+}
+
+/* ---------- Top bar ---------- */
+.topbar {
+  background: transparent;
+  padding: 20px 18px 8px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.brand {
+  font-weight: 800;
+  font-size: 1.25rem;
+  color: var(--text-900);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.brand span.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--green-500), var(--lime-400));
+  display: inline-block;
+}
+
+/* ---------- Shell / desktop sidebar ---------- */
+.app-shell {
+  display: flex;
+  min-height: 100vh;
+}
+.sidebar {
+  width: 240px;
+  background: var(--white);
+  border-right: 1px solid rgba(32, 43, 34, 0.06);
+  padding: 24px 16px;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+}
+.sidebar .brand {
+  padding: 0 8px 24px;
+}
+.sidebar .nav-link {
+  color: var(--text-500);
+  font-weight: 600;
+  font-size: 0.92rem;
+  border-radius: var(--radius-sm);
+  padding: 11px 14px;
+  margin-bottom: 4px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.sidebar .nav-link.active,
+.sidebar .nav-link:hover {
+  background: var(--green-100);
+  color: var(--green-600);
+}
+.main-col {
+  flex: 1;
+  min-width: 0;
+}
+.content-wrap {
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 0 18px 24px;
+}
+@media (min-width: 992px) {
+  .content-wrap {
+    max-width: 1080px;
+    padding: 24px 40px 40px;
+  }
+  .dashboard-grid {
+    display: grid;
+    grid-template-columns: 1.3fr 1fr;
+    gap: 20px;
+  }
+}
+
+/* ---------- Bottom tab bar (mobile only) ---------- */
+.bottom-nav {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--white);
+  box-shadow: 0 -6px 20px rgba(32, 43, 34, 0.08);
+  display: flex;
+  justify-content: space-around;
+  padding: 10px 6px calc(10px + env(safe-area-inset-bottom));
+  z-index: 20;
+  border-radius: 22px 22px 0 0;
+}
+.bottom-nav a {
+  color: var(--text-500);
+  font-size: 0.68rem;
+  font-weight: 600;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  border-radius: 12px;
+}
+.bottom-nav a.active {
+  color: var(--green-600);
+  background: var(--green-100);
+}
+.bottom-nav i {
+  font-size: 1.15rem;
+}
+
+/* ---------- Cards ---------- */
+.card-soft {
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  padding: 20px;
+  box-shadow: var(--shadow-card);
+  border: none;
+}
+.card-dark {
+  background: var(--dark-900);
+  color: var(--white);
+  border-radius: var(--radius-lg);
+  padding: 22px;
+}
+.card-dark .btn-lime {
+  background: var(--lime-400);
+  color: var(--dark-900);
+  font-weight: 700;
+  border-radius: 100px;
+  border: none;
+  padding: 10px 20px;
+}
+.greet-name {
+  font-weight: 700;
+  font-size: 1.15rem;
+}
+.greet-sub {
+  color: var(--text-500);
+  font-size: 0.85rem;
+}
+
+/* Big kalori ring card */
+.kalori-card {
+  background: linear-gradient(160deg, var(--green-500), var(--green-600));
+  color: var(--white);
+  border-radius: var(--radius-lg);
+  padding: 22px;
+  position: relative;
+  overflow: hidden;
+}
+.kalori-card .kalori-value {
+  font-size: 2.4rem;
+  font-weight: 800;
+  line-height: 1;
+}
+.kalori-card .kalori-label {
+  opacity: 0.85;
+  font-size: 0.8rem;
+}
+
+.mini-stat {
+  background: var(--white);
+  border-radius: var(--radius-md);
+  padding: 14px;
+  text-align: center;
+  box-shadow: var(--shadow-card);
+}
+.mini-stat .stat-value {
+  font-weight: 700;
+  font-size: 1.15rem;
+}
+.mini-stat .stat-label {
+  color: var(--text-500);
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.quick-link {
+  background: var(--white);
+  border-radius: var(--radius-md);
+  padding: 16px;
+  box-shadow: var(--shadow-card);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--text-900);
+  font-weight: 600;
+  transition: transform 0.15s ease;
+}
+.quick-link:hover {
+  transform: translateY(-2px);
+  color: var(--text-900);
+}
+.quick-link .icon-badge {
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  color: var(--green-600);
+  background: var(--green-100);
+}
+
+/* ---------- Lists ---------- */
+.list-row {
+  background: var(--white);
+  border-radius: var(--radius-md);
+  padding: 14px 16px;
+  box-shadow: var(--shadow-card);
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
+.list-row .title {
+  font-weight: 700;
+  font-size: 0.95rem;
+}
+.list-row .subtitle {
+  color: var(--text-500);
+  font-size: 0.8rem;
+}
+.badge-kategori {
+  background: var(--green-100);
+  color: var(--green-600);
+  font-weight: 600;
+  font-size: 0.7rem;
+  padding: 4px 10px;
+  border-radius: 100px;
+}
+
+/* ---------- Forms ---------- */
+.form-soft .form-label {
+  font-weight: 600;
+  font-size: 0.85rem;
+  color: var(--text-900);
+}
+.form-soft .form-control,
+.form-soft .form-select {
+  border-radius: var(--radius-sm);
+  border: 1px solid rgba(32, 43, 34, 0.12);
+  padding: 10px 14px;
+  font-size: 0.92rem;
+}
+.form-soft .form-control:focus,
+.form-soft .form-select:focus {
+  border-color: var(--green-500);
+  box-shadow: 0 0 0 3px var(--green-100);
+}
+
+/* ---------- Buttons ---------- */
+.btn-brand {
+  background: var(--green-600);
+  color: var(--white);
+  border: none;
+  border-radius: 100px;
+  font-weight: 700;
+  padding: 11px 22px;
+}
+.btn-brand:hover {
+  background: var(--green-500);
+  color: var(--white);
+}
+.btn-outline-brand {
+  border: 1.5px solid var(--green-600);
+  color: var(--green-600);
+  border-radius: 100px;
+  font-weight: 700;
+  padding: 10px 20px;
+  background: transparent;
+}
+.btn-danger-soft {
+  background: #fcebe9;
+  color: var(--danger);
+  border: none;
+  border-radius: 100px;
+  font-weight: 600;
+  padding: 6px 14px;
+  font-size: 0.78rem;
+}
+
+/* ---------- Page header ---------- */
+.page-title {
+  font-weight: 800;
+  font-size: 1.4rem;
+  margin-bottom: 2px;
+}
+.page-sub {
+  color: var(--text-500);
+  font-size: 0.88rem;
+  margin-bottom: 20px;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 40px 16px;
+  color: var(--text-500);
+}
+.empty-state i {
+  font-size: 2rem;
+  color: var(--green-500);
+  margin-bottom: 10px;
+  display: block;
+}
+
+/* ---------- Sidebar as column (for mt-auto logout) ---------- */
+.sidebar {
+  display: flex;
+  flex-direction: column;
+}
+
+/* ---------- Streak badge (dashboard header) ---------- */
+.streak-badge {
+  background: #fff4e0;
+  color: #b9770e;
+  font-weight: 700;
+  font-size: 0.85rem;
+  padding: 8px 14px;
+  border-radius: 100px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.streak-badge i {
+  color: #f5a524;
+}
+
+/* ---------- Auth (login/register) ---------- */
+.auth-shell {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 16px;
+  background: linear-gradient(160deg, var(--cream-50), var(--green-100));
+}
+.auth-card {
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  padding: 32px 26px;
+  width: 100%;
+  max-width: 400px;
+}
+.alert-soft {
+  border-radius: var(--radius-sm);
+  padding: 10px 14px;
+  font-size: 0.85rem;
+  margin-bottom: 14px;
+}
+.alert-danger-soft {
+  background: #fcebe9;
+  color: var(--danger);
+}
+.alert-sukses-soft {
+  background: var(--green-100);
+  color: var(--green-600);
+}
+
+/* ---------- Chart wrapper ---------- */
+.chart-wrap {
+  background: var(--cream-50);
+  border-radius: var(--radius-md);
+  padding: 12px;
+}
+
+/* ---------- Tablet tuning ---------- */
+@media (min-width: 768px) and (max-width: 991.98px) {
+  .content-wrap {
+    max-width: 620px;
+    padding: 0 28px 24px;
+  }
+  .bottom-nav {
+    max-width: 620px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-radius: 22px;
+    bottom: 14px;
+  }
+}

@@ -1,0 +1,57 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head th:replace="~{fragments/layout :: head(title='Login')}"></head>
+  <body>
+    <div class="auth-shell">
+      <div class="auth-card">
+        <div class="brand justify-content-center mb-1">
+          <span class="dot"></span>Diet Planner
+        </div>
+        <p class="text-center text-muted mb-4" style="font-size: 0.9rem">
+          Masuk untuk lihat progress dietmu
+        </p>
+
+        <div
+          th:if="${pesanError}"
+          class="alert-soft alert-danger-soft"
+          th:text="${pesanError}"
+        ></div>
+        <div
+          th:if="${pesanSukses}"
+          class="alert-soft alert-sukses-soft"
+          th:text="${pesanSukses}"
+        ></div>
+
+        <form method="post" th:action="@{/login}" class="form-soft">
+          <div class="mb-3">
+            <label class="form-label">Username</label>
+            <input
+              class="form-control"
+              type="text"
+              name="username"
+              required
+              autofocus
+            />
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Password</label>
+            <input
+              class="form-control"
+              type="password"
+              name="password"
+              required
+            />
+          </div>
+          <button type="submit" class="btn-brand btn w-100 mt-2">Masuk</button>
+        </form>
+
+        <p class="text-center text-muted mt-3 mb-0" style="font-size: 0.87rem">
+          Belum punya akun?
+          <a href="/register" style="color: var(--green-600); font-weight: 700"
+            >Daftar</a
+          >
+        </p>
+      </div>
+    </div>
+  </body>
+</html>

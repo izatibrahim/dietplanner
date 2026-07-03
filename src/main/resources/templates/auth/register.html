@@ -1,0 +1,142 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head th:replace="~{fragments/layout :: head(title='Daftar Akun')}"></head>
+  <body>
+    <div class="auth-shell">
+      <div class="auth-card" style="max-width: 460px">
+        <div class="brand justify-content-center mb-1">
+          <span class="dot"></span>Diet Planner
+        </div>
+        <p class="text-center text-muted mb-4" style="font-size: 0.9rem">
+          Buat akun untuk mulai rencana dietmu
+        </p>
+
+        <div
+          th:if="${pesanError}"
+          class="alert-soft alert-danger-soft"
+          th:text="${pesanError}"
+        ></div>
+
+        <form
+          method="post"
+          th:action="@{/register}"
+          th:object="${user}"
+          class="form-soft"
+        >
+          <div class="mb-3">
+            <label class="form-label">Nama Lengkap</label>
+            <input
+              class="form-control"
+              type="text"
+              th:field="*{nama}"
+              required
+            />
+          </div>
+
+          <div class="row">
+            <div class="col-6 mb-3">
+              <label class="form-label">Umur</label>
+              <input
+                class="form-control"
+                type="number"
+                th:field="*{umur}"
+                required
+              />
+            </div>
+            <div class="col-6 mb-3">
+              <label class="form-label">Jenis Kelamin</label>
+              <select class="form-select" th:field="*{jenisKelamin}">
+                <option value="L">Laki-laki</option>
+                <option value="P">Perempuan</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-6 mb-3">
+              <label class="form-label">Tinggi (cm)</label>
+              <input
+                class="form-control"
+                type="number"
+                step="0.1"
+                th:field="*{tinggiBadan}"
+                required
+              />
+            </div>
+            <div class="col-6 mb-3">
+              <label class="form-label">Berat (kg)</label>
+              <input
+                class="form-control"
+                type="number"
+                step="0.1"
+                th:field="*{beratBadan}"
+                required
+              />
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Target</label>
+            <select class="form-select" th:field="*{target}">
+              <option value="Bulking">Bulking</option>
+              <option value="Cutting">Cutting</option>
+              <option value="Maintenance">Maintenance</option>
+            </select>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Alergi (opsional)</label>
+            <input
+              class="form-control"
+              type="text"
+              th:field="*{alergi}"
+              placeholder="contoh: kacang, udang"
+            />
+          </div>
+
+          <hr class="my-3" />
+
+          <div class="mb-3">
+            <label class="form-label">Username</label>
+            <input
+              class="form-control"
+              type="text"
+              th:field="*{username}"
+              required
+            />
+          </div>
+
+          <div class="row">
+            <div class="col-6 mb-3">
+              <label class="form-label">Password</label>
+              <input
+                class="form-control"
+                type="password"
+                th:field="*{password}"
+                required
+              />
+            </div>
+            <div class="col-6 mb-3">
+              <label class="form-label">Konfirmasi</label>
+              <input
+                class="form-control"
+                type="password"
+                name="konfirmasiPassword"
+                required
+              />
+            </div>
+          </div>
+
+          <button type="submit" class="btn-brand btn w-100 mt-2">Daftar</button>
+        </form>
+
+        <p class="text-center text-muted mt-3 mb-0" style="font-size: 0.87rem">
+          Sudah punya akun?
+          <a href="/login" style="color: var(--green-600); font-weight: 700"
+            >Masuk</a
+          >
+        </p>
+      </div>
+    </div>
+  </body>
+</html>

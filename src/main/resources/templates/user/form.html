@@ -1,0 +1,128 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head
+    th:replace="~{fragments/layout :: head(title=${user.id == 0} ? 'Tambah User' : 'Edit User')}"
+  ></head>
+  <body>
+    <div class="app-shell">
+      <div th:replace="~{fragments/layout :: nav(active='user')}"></div>
+      <div class="main-col">
+        <div class="topbar d-lg-none">
+          <a href="/user" class="text-dark"
+            ><i class="bi bi-arrow-left fs-5"></i
+          ></a>
+          <div class="brand"><span class="dot"></span>Diet Planner</div>
+        </div>
+        <div class="content-wrap">
+          <p
+            class="page-title mb-0"
+            th:text="${user.id == 0} ? 'Tambah User' : 'Edit User'"
+          >
+            Tambah User
+          </p>
+          <p class="page-sub">
+            Lengkapi data profil untuk hitung BMI/BMR otomatis
+          </p>
+
+          <form
+            class="card-soft form-soft"
+            method="post"
+            th:action="${user.id == 0} ? @{/user/tambah} : @{/user/edit/{id}(id=${user.id})}"
+            th:object="${user}"
+          >
+            <div class="mb-3">
+              <label class="form-label">Nama</label>
+              <input
+                class="form-control"
+                type="text"
+                th:field="*{nama}"
+                required
+              />
+            </div>
+            <div class="row">
+              <div class="col-6 mb-3">
+                <label class="form-label">Umur</label>
+                <input
+                  class="form-control"
+                  type="number"
+                  th:field="*{umur}"
+                  required
+                />
+              </div>
+              <div class="col-6 mb-3">
+                <label class="form-label">Jenis Kelamin</label>
+                <select class="form-select" th:field="*{jenisKelamin}">
+                  <option value="L">Laki-laki</option>
+                  <option value="P">Perempuan</option>
+                </select>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-6 mb-3">
+                <label class="form-label">Tinggi Badan (cm)</label>
+                <input
+                  class="form-control"
+                  type="number"
+                  step="0.1"
+                  th:field="*{tinggiBadan}"
+                  required
+                />
+              </div>
+              <div class="col-6 mb-3">
+                <label class="form-label">Berat Badan (kg)</label>
+                <input
+                  class="form-control"
+                  type="number"
+                  step="0.1"
+                  th:field="*{beratBadan}"
+                  required
+                />
+              </div>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Target</label>
+              <select class="form-select" th:field="*{target}">
+                <option value="Bulking">Bulking</option>
+                <option value="Cutting">Cutting</option>
+                <option value="Maintenance">Maintenance</option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label class="form-label"
+                >Alergi (pisahkan koma, kosongkan jika tidak ada)</label
+              >
+              <input
+                class="form-control"
+                type="text"
+                th:field="*{alergi}"
+                placeholder="contoh: kacang, udang"
+              />
+            </div>
+            <div class="mb-3">
+              <label class="form-label"
+                >Target Kalori Manual (opsional, boleh 0 jika ingin dihitung
+                otomatis)</label
+              >
+              <input
+                class="form-control"
+                type="number"
+                th:field="*{targetKalori}"
+              />
+            </div>
+
+            <div class="d-flex gap-2 mt-2">
+              <button type="submit" class="btn-brand btn flex-fill">
+                Simpan
+              </button>
+              <a
+                href="/user"
+                class="btn btn-outline-brand flex-fill text-center"
+                >Batal</a
+              >
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,94 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head th:replace="~{fragments/layout :: head(title='Generate Menu')}"></head>
+  <body>
+    <div class="app-shell">
+      <div th:replace="~{fragments/layout :: nav(active='menu')}"></div>
+      <div class="main-col">
+        <div class="topbar d-lg-none">
+          <div class="brand"><span class="dot"></span>Diet Planner</div>
+          <a href="/logout" class="text-dark"
+            ><i class="bi bi-box-arrow-right fs-5"></i
+          ></a>
+        </div>
+        <div class="content-wrap">
+          <p class="page-title mb-0">Generate Menu</p>
+          <p class="page-sub">
+            Rekomendasi menu otomatis sesuai target kalori &amp; alergi
+          </p>
+
+          <div class="kalori-card mb-3">
+            <div class="kalori-label">
+              TARGET KALORI (<span th:text="${user.target}"></span>)
+            </div>
+            <div class="kalori-value">
+              <span th:text="${targetKalori}">0</span>
+              <small style="font-size: 1rem; font-weight: 600">kkal</small>
+            </div>
+          </div>
+
+          <div
+            th:if="${hasil == null or hasil.isEmpty()}"
+            class="empty-state card-soft"
+          >
+            <i class="bi bi-emoji-frown"></i>
+            Tidak ditemukan kombinasi menu. Pastikan makanan tersedia untuk tiap
+            kategori dan aman dari alergi.
+          </div>
+
+          <div th:if="${hasil != null and !hasil.isEmpty()}">
+            <div class="list-row" th:each="m : ${hasil}">
+              <div>
+                <span
+                  class="badge-kategori mb-1 d-inline-block"
+                  th:text="${m.kategori}"
+                ></span>
+                <div class="title" th:text="${m.nama}"></div>
+                <div class="subtitle" th:text="${m.kalori} + ' kkal'"></div>
+              </div>
+            </div>
+
+            <div
+              class="card-dark d-flex justify-content-between align-items-center mt-3"
+            >
+              <div>
+                <div style="opacity: 0.75; font-size: 0.8rem">
+                  Total kalori menu ini
+                </div>
+                <div
+                  class="fw-bold fs-5"
+                  th:text="${totalKalori} + ' kkal'"
+                ></div>
+              </div>
+              <form method="post" th:action="@{/menu/generate/simpan}">
+                <input
+                  type="hidden"
+                  name="sarapan"
+                  th:value="${hasil[0].nama}"
+                />
+                <input
+                  type="hidden"
+                  name="makanSiang"
+                  th:value="${hasil[1].nama}"
+                />
+                <input
+                  type="hidden"
+                  name="makanMalam"
+                  th:value="${hasil[2].nama}"
+                />
+                <input
+                  type="hidden"
+                  name="totalKalori"
+                  th:value="${totalKalori}"
+                />
+                <button class="btn btn-lime" type="submit">
+                  Simpan ke Riwayat
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,227 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head th:replace="~{fragments/layout :: head(title='Dashboard')}"></head>
+  <body>
+    <div class="app-shell">
+      <div th:replace="~{fragments/layout :: nav(active='dashboard')}"></div>
+
+      <div class="main-col">
+        <div class="topbar d-lg-none">
+          <div class="brand"><span class="dot"></span>Diet Planner</div>
+          <a href="/logout" class="text-dark"
+            ><i class="bi bi-box-arrow-right fs-5"></i
+          ></a>
+        </div>
+
+        <div class="content-wrap">
+          <div
+            class="d-flex justify-content-between align-items-start mb-3 flex-wrap gap-2"
+          >
+            <div>
+              <p class="page-title mb-0" th:text="'Hai, ' + ${user.nama}">
+                Hai
+              </p>
+              <p class="page-sub mb-0">Ringkasan kebutuhan kalori harianmu</p>
+            </div>
+            <div class="streak-badge">
+              <i class="bi bi-fire"></i>
+              <span th:text="${streak}">0</span> hari
+            </div>
+          </div>
+
+          <div class="dashboard-grid">
+            <div>
+              <!-- Big kalori card -->
+              <div class="kalori-card mb-3">
+                <div class="kalori-label">
+                  TARGET KALORI HARIAN (<span th:text="${user.target}"></span>)
+                </div>
+                <div class="kalori-value">
+                  <span th:text="${targetKalori}">0</span>
+                  <small style="font-size: 1rem; font-weight: 600">kkal</small>
+                </div>
+              </div>
+
+              <!-- mini stats -->
+              <div class="row g-2 mb-3">
+                <div class="col-4">
+                  <div class="mini-stat">
+                    <div
+                      class="stat-value"
+                      th:text="${#numbers.formatDecimal(bmi,1,1)}"
+                    >
+                      0
+                    </div>
+                    <div class="stat-label" th:text="${kategoriBMI}">BMI</div>
+                  </div>
+                </div>
+                <div class="col-4">
+                  <div class="mini-stat">
+                    <div class="stat-value" th:text="${bmr}">0</div>
+                    <div class="stat-label">BMR (kkal)</div>
+                  </div>
+                </div>
+                <div class="col-4">
+                  <div class="mini-stat">
+                    <div class="stat-value" th:text="${tdee}">0</div>
+                    <div class="stat-label">TDEE (kkal)</div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- CTA generate -->
+              <div
+                class="card-dark d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2"
+              >
+                <div>
+                  <div class="fw-bold mb-1">Generate menu hari ini</div>
+                  <div style="opacity: 0.75; font-size: 0.82rem">
+                    Sesuai target kalori &amp; alergi kamu
+                  </div>
+                </div>
+                <a class="btn btn-lime" href="/menu/generate"
+                  >Buat Menu <i class="bi bi-arrow-right"></i
+                ></a>
+              </div>
+            </div>
+
+            <div>
+              <!-- Streak card -->
+              <div class="card-soft mb-3 text-center">
+                <i
+                  class="bi bi-fire"
+                  style="font-size: 2.2rem; color: #f5a524"
+                ></i>
+                <div
+                  class="fw-bold fs-4 mt-1"
+                  th:text="${streak} + ' hari beruntun'"
+                >
+                  0 hari beruntun
+                </div>
+                <div
+                  class="text-muted"
+                  style="font-size: 0.82rem"
+                  th:if="${streak > 0}"
+                >
+                  Terus konsisten, jangan putus ya!
+                </div>
+                <div
+                  class="text-muted"
+                  style="font-size: 0.82rem"
+                  th:if="${streak == 0}"
+                >
+                  Generate &amp; simpan menu hari ini untuk mulai streak.
+                </div>
+              </div>
+
+              <!-- Weight trend mini -->
+              <div class="card-soft mb-3">
+                <div class="fw-bold mb-2" style="font-size: 0.95rem">
+                  Progress Berat Badan
+                </div>
+                <div class="d-flex align-items-baseline gap-2">
+                  <span
+                    class="fs-4 fw-bold"
+                    th:text="${user.beratBadan} + ' kg'"
+                  ></span>
+                  <span
+                    th:if="${selisihBerat != null and selisihBerat < 0}"
+                    class="badge-kategori"
+                    style="background: #e4f5e9; color: #2e9e5b"
+                  >
+                    <i class="bi bi-arrow-down"></i>
+                    <span
+                      th:text="${#numbers.formatDecimal(selisihBerat,1,1,'POINT')}"
+                    ></span>
+                    kg
+                  </span>
+                  <span
+                    th:if="${selisihBerat != null and selisihBerat > 0}"
+                    class="badge-kategori"
+                    style="background: #fcebe9; color: #e2574c"
+                  >
+                    <i class="bi bi-arrow-up"></i> +<span
+                      th:text="${#numbers.formatDecimal(selisihBerat,1,1,'POINT')}"
+                    ></span>
+                    kg
+                  </span>
+                </div>
+                <a
+                  class="btn btn-outline-brand btn-sm w-100 mt-2"
+                  href="/progress"
+                  >Lihat Grafik &amp; Catat Berat</a
+                >
+              </div>
+
+              <div class="card-soft mb-3">
+                <div class="fw-bold mb-2" style="font-size: 0.95rem">
+                  Detail Profil
+                </div>
+                <div
+                  class="d-flex justify-content-between py-1"
+                  style="font-size: 0.87rem"
+                >
+                  <span class="text-muted">Umur</span
+                  ><span th:text="${user.umur} + ' tahun'"></span>
+                </div>
+                <div
+                  class="d-flex justify-content-between py-1"
+                  style="font-size: 0.87rem"
+                >
+                  <span class="text-muted">Tinggi</span
+                  ><span th:text="${user.tinggiBadan} + ' cm'"></span>
+                </div>
+                <div
+                  class="d-flex justify-content-between py-1"
+                  style="font-size: 0.87rem"
+                >
+                  <span class="text-muted">Alergi</span
+                  ><span
+                    th:text="${#strings.isEmpty(user.alergi)} ? '-' : ${user.alergi}"
+                  ></span>
+                </div>
+                <a
+                  class="btn btn-outline-brand btn-sm w-100 mt-2"
+                  th:href="@{/user/edit/{id}(id=${user.id})}"
+                  >Edit Profil</a
+                >
+              </div>
+            </div>
+          </div>
+
+          <!-- Quick links -->
+          <div class="row g-2 mt-2">
+            <div class="col-6 col-lg-3">
+              <a class="quick-link" href="/user"
+                ><span class="icon-badge"
+                  ><i class="bi bi-person-circle"></i
+                ></span>
+                Profil</a
+              >
+            </div>
+            <div class="col-6 col-lg-3">
+              <a class="quick-link" href="/makanan"
+                ><span class="icon-badge"><i class="bi bi-egg-fried"></i></span>
+                Data Makanan</a
+              >
+            </div>
+            <div class="col-6 col-lg-3">
+              <a class="quick-link" href="/menu/generate"
+                ><span class="icon-badge"><i class="bi bi-magic"></i></span>
+                Generate Menu</a
+              >
+            </div>
+            <div class="col-6 col-lg-3">
+              <a class="quick-link" href="/menu/riwayat"
+                ><span class="icon-badge"
+                  ><i class="bi bi-clock-history"></i
+                ></span>
+                Riwayat</a
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

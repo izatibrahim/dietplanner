@@ -1,0 +1,119 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head
+    th:replace="~{fragments/layout :: head(title=${makanan.id == 0} ? 'Tambah Makanan' : 'Edit Makanan')}"
+  ></head>
+  <body>
+    <div class="app-shell">
+      <div th:replace="~{fragments/layout :: nav(active='makanan')}"></div>
+      <div class="main-col">
+        <div class="topbar d-lg-none">
+          <a href="/makanan" class="text-dark"
+            ><i class="bi bi-arrow-left fs-5"></i
+          ></a>
+          <div class="brand"><span class="dot"></span>Diet Planner</div>
+        </div>
+        <div class="content-wrap">
+          <p
+            class="page-title mb-0"
+            th:text="${makanan.id == 0} ? 'Tambah Makanan' : 'Edit Makanan'"
+          >
+            Tambah Makanan
+          </p>
+          <p class="page-sub">
+            Data gizi digunakan saat generate menu otomatis
+          </p>
+
+          <form
+            class="card-soft form-soft"
+            method="post"
+            th:action="${makanan.id == 0} ? @{/makanan/tambah} : @{/makanan/edit/{id}(id=${makanan.id})}"
+            th:object="${makanan}"
+          >
+            <div class="mb-3">
+              <label class="form-label">Nama Makanan</label>
+              <input
+                class="form-control"
+                type="text"
+                th:field="*{nama}"
+                required
+              />
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Kategori</label>
+              <select class="form-select" th:field="*{kategori}">
+                <option
+                  th:each="k : ${daftarKategori}"
+                  th:value="${k}"
+                  th:text="${k}"
+                ></option>
+              </select>
+            </div>
+            <div class="row">
+              <div class="col-6 mb-3">
+                <label class="form-label">Kalori (kkal)</label>
+                <input
+                  class="form-control"
+                  type="number"
+                  th:field="*{kalori}"
+                  required
+                />
+              </div>
+              <div class="col-6 mb-3">
+                <label class="form-label">Protein (g)</label>
+                <input
+                  class="form-control"
+                  type="number"
+                  step="0.1"
+                  th:field="*{protein}"
+                />
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-6 mb-3">
+                <label class="form-label">Karbohidrat (g)</label>
+                <input
+                  class="form-control"
+                  type="number"
+                  step="0.1"
+                  th:field="*{karbohidrat}"
+                />
+              </div>
+              <div class="col-6 mb-3">
+                <label class="form-label">Lemak (g)</label>
+                <input
+                  class="form-control"
+                  type="number"
+                  step="0.1"
+                  th:field="*{lemak}"
+                />
+              </div>
+            </div>
+            <div class="mb-3">
+              <label class="form-label"
+                >Alergen (pisahkan koma, kosongkan jika tidak ada)</label
+              >
+              <input
+                class="form-control"
+                type="text"
+                th:field="*{alergen}"
+                placeholder="contoh: kacang, susu"
+              />
+            </div>
+
+            <div class="d-flex gap-2 mt-2">
+              <button type="submit" class="btn-brand btn flex-fill">
+                Simpan
+              </button>
+              <a
+                href="/makanan"
+                class="btn btn-outline-brand flex-fill text-center"
+                >Batal</a
+              >
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

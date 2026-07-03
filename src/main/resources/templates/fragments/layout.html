@@ -1,0 +1,102 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <th:block th:fragment="head(title)">
+      <meta charset="UTF-8" />
+      <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+      />
+      <title th:text="${title} + ' · Diet Planner'">Diet Planner</title>
+      <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.3/css/bootstrap.min.css"
+      />
+      <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css"
+      />
+      <link rel="stylesheet" th:href="@{/css/style.css}" />
+    </th:block>
+  </head>
+  <body>
+    <div th:fragment="nav(active)">
+      <!-- Sidebar (desktop & tablet lebar) -->
+      <nav class="sidebar d-none d-lg-flex flex-column">
+        <div>
+          <div class="brand"><span class="dot"></span>Diet Planner</div>
+          <a
+            class="nav-link"
+            th:classappend="${active == 'dashboard'} ? 'active'"
+            href="/"
+          >
+            <i class="bi bi-house-door"></i> Dashboard
+          </a>
+          <a
+            class="nav-link"
+            th:classappend="${active == 'progress'} ? 'active'"
+            href="/progress"
+          >
+            <i class="bi bi-graph-up-arrow"></i> Progress
+          </a>
+          <a
+            class="nav-link"
+            th:classappend="${active == 'user'} ? 'active'"
+            href="/user"
+          >
+            <i class="bi bi-person-circle"></i> Profil
+          </a>
+          <a
+            class="nav-link"
+            th:classappend="${active == 'makanan'} ? 'active'"
+            href="/makanan"
+          >
+            <i class="bi bi-egg-fried"></i> Data Makanan
+          </a>
+          <a
+            class="nav-link"
+            th:classappend="${active == 'menu'} ? 'active'"
+            href="/menu/generate"
+          >
+            <i class="bi bi-magic"></i> Generate Menu
+          </a>
+          <a
+            class="nav-link"
+            th:classappend="${active == 'riwayat'} ? 'active'"
+            href="/menu/riwayat"
+          >
+            <i class="bi bi-clock-history"></i> Riwayat
+          </a>
+        </div>
+        <a class="nav-link mt-auto" href="/logout" style="color: #e2574c">
+          <i class="bi bi-box-arrow-right"></i> Logout
+        </a>
+      </nav>
+
+      <!-- Bottom tab bar (mobile & tablet sempit) -->
+      <div class="bottom-nav d-lg-none">
+        <a th:classappend="${active == 'dashboard'} ? 'active'" href="/">
+          <i class="bi bi-house-door"></i>Home
+        </a>
+        <a th:classappend="${active == 'progress'} ? 'active'" href="/progress">
+          <i class="bi bi-graph-up-arrow"></i>Progress
+        </a>
+        <a
+          th:classappend="${active == 'menu'} ? 'active'"
+          href="/menu/generate"
+        >
+          <i class="bi bi-magic"></i>Menu
+        </a>
+        <a th:classappend="${active == 'makanan'} ? 'active'" href="/makanan">
+          <i class="bi bi-egg-fried"></i>Makanan
+        </a>
+        <a
+          th:classappend="${active == 'riwayat'} ? 'active'"
+          href="/menu/riwayat"
+        >
+          <i class="bi bi-clock-history"></i>Riwayat
+        </a>
+      </div>
+    </div>
+  </body>
+</html>
