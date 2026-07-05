@@ -41,13 +41,6 @@
           </a>
           <a
             class="nav-link"
-            th:classappend="${active == 'user'} ? 'active'"
-            href="/user"
-          >
-            <i class="bi bi-person-circle"></i> Profil
-          </a>
-          <a
-            class="nav-link"
             th:classappend="${active == 'makanan'} ? 'active'"
             href="/makanan"
           >
@@ -72,6 +65,16 @@
           <i class="bi bi-box-arrow-right"></i> Logout
         </a>
       </nav>
+
+      <!-- Profil (pojok kanan atas, desktop & tablet lebar) -->
+      <a
+        href="/user"
+        class="profile-corner d-none d-lg-flex"
+        th:classappend="${active == 'user'} ? 'active'"
+        title="Profil"
+      >
+        <i class="bi bi-person-circle"></i>
+      </a>
 
       <!-- Bottom tab bar (mobile & tablet sempit) -->
       <div class="bottom-nav d-lg-none">

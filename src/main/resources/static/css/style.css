@@ -432,3 +432,32 @@ a {
     bottom: 14px;
   }
 }
+
+/* ---------- Profil di pojok kanan atas (desktop) ---------- */
+.profile-corner {
+  position: fixed;
+  top: 22px;
+  right: 32px;
+  z-index: 30;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background: var(--white);
+  box-shadow: var(--shadow-card);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-500);
+  font-size: 1.3rem;
+  transition:
+    transform 0.15s ease,
+    color 0.15s ease;
+}
+.profile-corner:hover {
+  transform: translateY(-2px);
+  color: var(--green-600);
+}
+.profile-corner.active {
+  color: var(--green-600);
+  box-shadow: 0 0 0 2px var(--green-500);
+}
