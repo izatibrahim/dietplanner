@@ -5,49 +5,69 @@ import com.dietplanner.dao.MakananDAO;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class DietPlannerService {
 
-    private List<Makanan> hasilTerbaik = new ArrayList<>();
-    private int selisihTerbaik = Integer.MAX_VALUE;
+    // Toleransi selisih kalori (kkal) supaya ada lebih dari satu kombinasi
+    // "cukup bagus" untuk dipilih secara acak, bukan cuma satu yang paling pas.
+    private static final int TOLERANSI_KALORI = 150;
 
-    private MakananDAO makananDAO = new MakananDAO();
+    private final MakananDAO makananDAO = new MakananDAO();
+    private final Random random = new Random();
+
+    // Menyimpan setiap kombinasi menu lengkap (3 slot) yang ditemukan backtracking,
+    // beserta total kalorinya, supaya bisa dipilah & dipilih secara acak nanti.
+    private List<KombinasiHasil> semuaKombinasi = new ArrayList<>();
 
     public List<Makanan> generateMenu(
             List<Makanan> daftarMakanan,
             int targetKalori,
             String alergi) {
 
-        hasilTerbaik.clear();
-        selisihTerbaik = Integer.MAX_VALUE;
- 
-            List<Makanan> sarapan = filterKategori(daftarMakanan, "SARAPAN", alergi);
-            List<Makanan> siang = filterKategori(daftarMakanan, "MAKAN_SIANG", alergi);
-            List<Makanan> malam = filterKategori(daftarMakanan, "MAKAN_MALAM", alergi);
+        List<Makanan> sarapan = filterKategori(daftarMakanan, "SARAPAN", alergi);
+        List<Makanan> siang = filterKategori(daftarMakanan, "MAKAN_SIANG", alergi);
+        List<Makanan> malam = filterKategori(daftarMakanan, "MAKAN_MALAM", alergi);
 
-        backtracking(sarapan, siang, malam, targetKalori, 0, new ArrayList<>(), 0);
+        semuaKombinasi = new ArrayList<>();
+        backtracking(sarapan, siang, malam, 0, new ArrayList<>(), 0);
 
-        return hasilTerbaik;
+        if (semuaKombinasi.isEmpty()) {
+            return new ArrayList<>();
+        }
+
+        // Cari selisih kalori terkecil yang mungkin dicapai dari seluruh kombinasi
+        int selisihTerbaik = Integer.MAX_VALUE;
+        for (KombinasiHasil k : semuaKombinasi) {
+            int selisih = Math.abs(targetKalori - k.totalKalori);
+            if (selisih < selisihTerbaik) {
+                selisihTerbaik = selisih;
+            }
+        }
+
+        // Kumpulkan semua kombinasi yang selisihnya masih dalam toleransi dari yang terbaik
+        List<List<Makanan>> kandidatTerbaik = new ArrayList<>();
+        for (KombinasiHasil k : semuaKombinasi) {
+            int selisih = Math.abs(targetKalori - k.totalKalori);
+            if (selisih <= selisihTerbaik + TOLERANSI_KALORI) {
+                kandidatTerbaik.add(k.menu);
+            }
+        }
+
+        // Pilih salah satu kandidat secara acak, supaya rekomendasi tidak itu-itu saja
+        return kandidatTerbaik.get(random.nextInt(kandidatTerbaik.size()));
     }
 
     private void backtracking(
             List<Makanan> sarapan,
             List<Makanan> siang,
             List<Makanan> malam,
-            int targetKalori,
             int slot,
             List<Makanan> sementara,
             int totalKalori) {
 
         if (slot == 3) {
-
-            int selisih = Math.abs(targetKalori - totalKalori);
-
-            if (selisih < selisihTerbaik) {
-                selisihTerbaik = selisih;
-                hasilTerbaik = new ArrayList<>(sementara);
-            }
-
+            semuaKombinasi.add(new KombinasiHasil(new ArrayList<>(sementara), totalKalori));
             return;
         }
 
@@ -67,7 +87,6 @@ public class DietPlannerService {
 
             backtracking(
                     sarapan, siang, malam,
-                    targetKalori,
                     slot + 1,
                     sementara,
                     totalKalori + makanan.getKalori()
@@ -120,6 +139,17 @@ public class DietPlannerService {
 
         return generateMenu(daftar, targetKalori, alergi);
 
+    }
+
+    // Kelas kecil untuk menyimpan satu kombinasi hasil backtracking beserta total kalorinya.
+    private static class KombinasiHasil {
+        List<Makanan> menu;
+        int totalKalori;
+
+        KombinasiHasil(List<Makanan> menu, int totalKalori) {
+            this.menu = menu;
+            this.totalKalori = totalKalori;
+        }
     }
 
 }
